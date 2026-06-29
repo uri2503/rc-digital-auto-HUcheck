@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>HU-Vorab-Check · Gut vorbereitet zur Hauptuntersuchung</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -11,7 +11,6 @@
   :root {
     --bg:          #12141A;
     --surface:     #1A1D26;
-    --surface2:    #20242F;
     --blue:        #0EA5E9;
     --blue-dim:    #0369A1;
     --blue-glow:   rgba(14,165,233,0.10);
@@ -21,472 +20,526 @@
     --red:         #f87171;
     --text:        #F8FAFC;
     --text-muted:  #8896A8;
-    --border:      rgba(255,255,255,0.07);
+    --border:      rgba(255,255,255,0.08);
   }
 
-  body {
+  html, body {
+    height: 100%;
+    overflow: hidden;
     background: var(--bg);
     color: var(--text);
     font-family: 'Inter', sans-serif;
-    line-height: 1.6;
-    min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* NAV */
-  nav {
+  /* ── WRAPPER: zeigt immer nur 1 Screen ── */
+  .slider {
+    display: flex;
+    width: 500%; /* 5 Screens × 100% */
+    height: 100%;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .screen {
+    width: 20%; /* 100% / 5 */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── NAV ── */
+  .top-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-    position: sticky; top: 0;
-    background: rgba(18,20,26,0.97);
-    backdrop-filter: blur(12px);
-    z-index: 100;
+    padding: 1rem 1.5rem 0.75rem;
+    flex-shrink: 0;
   }
 
-  .nav-logo {
+  .logo {
     display: flex; align-items: center; gap: 0.5rem;
-    text-decoration: none;
   }
-  .nav-logo-mark {
-    width: 28px; height: 28px;
+  .logo-mark {
+    width: 26px; height: 26px;
     background: var(--blue); border-radius: 6px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
+    font-size: 12px;
   }
-  .nav-logo-text { font-size: 0.88rem; font-weight: 700; color: var(--text); }
-  .nav-logo-text span { color: var(--blue); font-weight: 400; }
+  .logo-text { font-size: 0.85rem; font-weight: 700; }
+  .logo-text span { color: var(--blue); font-weight: 400; }
 
-  .nav-cta {
+  /* ── FORTSCHRITTS-PUNKTE ── */
+  .dots {
+    display: flex; gap: 6px; align-items: center;
+  }
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--border); transition: all 0.3s;
+  }
+  .dot.active { background: var(--blue); width: 18px; border-radius: 3px; }
+
+  /* ── CONTENT BEREICH ── */
+  .content {
+    flex: 1;
+    padding: 1.5rem 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--blue);
+    background: var(--blue-glow); border: 1px solid var(--blue-border);
+    padding: 0.2rem 0.6rem; border-radius: 100px;
+    margin-bottom: 1rem; align-self: flex-start;
+  }
+
+  .badge.amber { color: var(--amber); background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.25); }
+  .badge.red   { color: var(--red);   background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.25); }
+  .badge.green { color: var(--green); background: rgba(74,222,128,0.1);  border-color: rgba(74,222,128,0.25); }
+
+  h1 {
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-weight: 800; line-height: 1.1;
+    letter-spacing: -0.03em; margin-bottom: 0.6rem;
+  }
+  h1 .accent { color: var(--blue); }
+  h1 .red    { color: var(--red); }
+  h1 .amber  { color: var(--amber); }
+  h1 .green  { color: var(--green); }
+
+  .lead {
+    font-size: 0.9rem; color: var(--text-muted);
+    line-height: 1.65; margin-bottom: 1.25rem;
+    font-weight: 300;
+  }
+
+  /* ── CARDS ── */
+  .cards { display: flex; flex-direction: column; gap: 0.6rem; flex: 1; overflow: hidden; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.9rem 1rem;
+    display: flex; align-items: flex-start; gap: 0.75rem;
+  }
+  .card.red-border   { border-color: rgba(248,113,113,0.25); }
+  .card.blue-border  { border-color: var(--blue-border); }
+  .card.green-border { border-color: rgba(74,222,128,0.25); }
+  .card.amber-border { border-color: rgba(251,191,36,0.25); }
+
+  .card-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .card-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .card-text  { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+  .card-text strong { color: var(--text); }
+
+  /* ── MATH BOX ── */
+  .math-box {
+    background: var(--surface);
+    border: 1px solid var(--blue-border);
+    border-radius: 12px; padding: 1rem 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+  .math-row {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 0.35rem 0;
+    font-size: 0.82rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .math-row:last-child { border-bottom: none; }
+  .math-row.total { font-weight: 700; font-size: 0.9rem; margin-top: 0.2rem; }
+  .math-label { color: var(--text-muted); }
+  .math-val   { font-weight: 600; color: var(--text); }
+  .math-val.red   { color: var(--red); }
+  .math-val.green { color: var(--green); }
+  .math-val.blue  { color: var(--blue); }
+
+  .vs-divider {
+    text-align: center; font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-muted); margin: 0.5rem 0;
+  }
+
+  /* ── BOTTOM BAR ── */
+  .bottom-bar {
+    padding: 1rem 1.5rem 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .btn-next {
+    width: 100%; padding: 0.9rem;
     background: var(--blue); color: #fff;
-    font-size: 0.78rem; font-weight: 700;
-    padding: 0.45rem 1rem; border-radius: 7px;
+    border: none; border-radius: 10px;
+    font-size: 0.95rem; font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .btn-next:hover { background: var(--blue-dim); }
+
+  .btn-next.green-btn { background: #16a34a; }
+  .btn-next.green-btn:hover { background: #15803d; }
+
+  .skip-link {
+    display: block; text-align: center;
+    font-size: 0.75rem; color: var(--text-muted);
+    margin-top: 0.6rem; cursor: pointer;
     text-decoration: none;
   }
 
-  /* HERO — mobile first, 1 screen */
-  .hero {
-    padding: 2.5rem 1.5rem 2rem;
-    text-align: center;
+  /* ── SCREEN 5: DEMO / TOOL CHOICE ── */
+  .choice-cards {
+    display: flex; flex-direction: column; gap: 0.75rem;
   }
 
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--blue);
-    background: var(--blue-glow); border: 1px solid var(--blue-border);
-    padding: 0.22rem 0.65rem; border-radius: 100px;
-    margin-bottom: 1.25rem;
-  }
-
-  .hero h1 {
-    font-size: clamp(1.75rem, 6vw, 2.8rem);
-    font-weight: 800; line-height: 1.1;
-    letter-spacing: -0.03em; margin-bottom: 0.75rem;
-  }
-  .hero h1 .accent { color: var(--blue); }
-
-  .hero-sub {
-    font-size: 0.95rem; color: var(--text-muted);
-    max-width: 400px; margin: 0 auto 1.75rem;
-    line-height: 1.7; font-weight: 300;
-  }
-
-  .btn-primary {
-    display: inline-block;
-    background: var(--blue); color: #fff;
-    font-size: 0.95rem; font-weight: 700;
-    padding: 0.9rem 2rem; border-radius: 10px;
-    text-decoration: none; width: 100%; max-width: 320px;
-    transition: background 0.2s;
-  }
-  .btn-primary:hover { background: var(--blue-dim); }
-
-  .btn-secondary {
-    display: inline-block;
-    background: transparent; color: var(--text-muted);
-    font-size: 0.82rem; font-weight: 500;
-    padding: 0.6rem 1rem; border-radius: 8px;
-    text-decoration: none; border: 1px solid var(--border);
-    margin-top: 0.6rem; width: 100%; max-width: 320px;
-  }
-
-  .hero-note {
-    font-size: 0.72rem; color: var(--text-muted);
-    margin-top: 0.75rem;
-  }
-  .hero-note span { color: var(--green); font-weight: 600; }
-
-  /* WAS IST HU */
-  .what-section {
-    padding: 2.5rem 1.5rem;
+  .choice-card {
     background: var(--surface);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .section-label {
-    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--blue);
-    margin-bottom: 0.5rem; display: block;
-  }
-
-  .what-section h2 {
-    font-size: 1.3rem; font-weight: 700;
-    letter-spacing: -0.02em; margin-bottom: 1.25rem;
-    line-height: 1.25;
-  }
-
-  .hu-explain {
-    background: var(--bg);
-    border: 1px solid var(--blue-border);
-    border-radius: 12px;
-    padding: 1.25rem;
-    margin-bottom: 1rem;
-  }
-
-  .hu-explain-title {
-    font-size: 0.88rem; font-weight: 700;
-    margin-bottom: 0.4rem; color: var(--text);
-  }
-
-  .hu-explain-text {
-    font-size: 0.82rem; color: var(--text-muted);
-    line-height: 1.65;
-  }
-
-  .hu-facts {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 0.75rem; margin-top: 1rem;
-  }
-
-  .hu-fact {
-    background: var(--bg);
     border: 1px solid var(--border);
-    border-radius: 10px; padding: 1rem;
-    text-align: center;
-  }
-
-  .hu-fact-num {
-    font-size: 1.6rem; font-weight: 800;
-    color: var(--blue); letter-spacing: -0.03em;
-    line-height: 1;
-  }
-
-  .hu-fact-label {
-    font-size: 0.72rem; color: var(--text-muted);
-    margin-top: 0.3rem; line-height: 1.4;
-  }
-
-  /* KOSTEN NUTZEN */
-  .value-section { padding: 2.5rem 1.5rem; }
-
-  .value-section h2 {
-    font-size: 1.3rem; font-weight: 700;
-    letter-spacing: -0.02em; margin-bottom: 1.25rem;
-    line-height: 1.25;
-  }
-
-  .value-compare {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 0.75rem; margin-bottom: 1.25rem;
-  }
-
-  .value-card {
-    border-radius: 10px; padding: 1rem;
-    border: 1px solid var(--border);
-  }
-
-  .value-card.bad {
-    background: rgba(248,113,113,0.05);
-    border-color: rgba(248,113,113,0.2);
-  }
-
-  .value-card.good {
-    background: rgba(14,165,233,0.05);
-    border-color: var(--blue-border);
-  }
-
-  .value-card-label {
-    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
-    text-transform: uppercase; margin-bottom: 0.5rem;
-  }
-  .value-card.bad .value-card-label { color: var(--red); }
-  .value-card.good .value-card-label { color: var(--blue); }
-
-  .value-card-item {
-    font-size: 0.78rem; color: var(--text-muted);
-    margin-bottom: 0.35rem; line-height: 1.4;
-    display: flex; align-items: flex-start; gap: 0.4rem;
-  }
-  .value-card-item .icon { flex-shrink: 0; margin-top: 0.05rem; }
-
-  /* SO EINFACH */
-  .how-section {
-    padding: 2.5rem 1.5rem;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .how-section h2 {
-    font-size: 1.3rem; font-weight: 700;
-    letter-spacing: -0.02em; margin-bottom: 1.25rem;
-    line-height: 1.25;
-  }
-
-  .steps { display: flex; flex-direction: column; gap: 0.75rem; }
-
-  .step {
-    display: flex; align-items: flex-start; gap: 0.9rem;
-    background: var(--bg); border: 1px solid var(--border);
-    border-radius: 10px; padding: 1rem;
-  }
-
-  .step-num {
-    width: 30px; height: 30px; flex-shrink: 0;
-    background: var(--blue-glow); border: 1px solid var(--blue-border);
-    border-radius: 7px; display: flex; align-items: center; justify-content: center;
-    font-size: 0.78rem; font-weight: 700; color: var(--blue);
-  }
-
-  .step-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.2rem; }
-  .step-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
-
-  /* PREIS */
-  .price-section { padding: 2.5rem 1.5rem; text-align: center; }
-
-  .price-section h2 {
-    font-size: 1.3rem; font-weight: 700;
-    letter-spacing: -0.02em; margin-bottom: 1.25rem;
-  }
-
-  .price-card {
-    background: var(--surface);
-    border: 1px solid var(--blue-border);
-    border-radius: 14px; padding: 1.5rem;
-    text-align: left; margin-bottom: 1rem;
-  }
-
-  .price-free-badge {
-    display: inline-flex; align-items: center; gap: 0.3rem;
-    font-size: 0.65rem; font-weight: 600; color: var(--green);
-    background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2);
-    padding: 0.2rem 0.6rem; border-radius: 100px; margin-bottom: 0.75rem;
-  }
-
-  .price-amount {
-    font-size: 2.5rem; font-weight: 800;
-    color: var(--blue); letter-spacing: -0.04em;
-    line-height: 1; margin-bottom: 0.25rem;
-  }
-  .price-amount sup { font-size: 1rem; vertical-align: super; }
-
-  .price-desc { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1rem; }
-
-  .price-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem; }
-  .price-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; }
-  .price-item .check { color: var(--green); flex-shrink: 0; }
-
-  /* CTA FINAL */
-  .cta-final {
-    padding: 2.5rem 1.5rem;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    text-align: center;
-  }
-
-  .cta-final h2 {
-    font-size: 1.3rem; font-weight: 700;
-    margin-bottom: 0.5rem; letter-spacing: -0.02em;
-  }
-
-  .cta-final p {
-    font-size: 0.85rem; color: var(--text-muted);
-    margin-bottom: 1.5rem; line-height: 1.6;
-  }
-
-  /* FOOTER */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 1.25rem 1.5rem;
+    border-radius: 12px; padding: 1.1rem 1.2rem;
+    text-decoration: none; color: inherit;
     display: flex; align-items: center;
-    justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
+    justify-content: space-between;
+    transition: border-color 0.2s;
   }
-  .footer-brand { font-size: 0.72rem; color: var(--text-muted); }
-  .footer-brand span { color: var(--blue); }
-  .footer-links { display: flex; gap: 1.25rem; }
-  .footer-links a { font-size: 0.68rem; color: var(--text-muted); text-decoration: none; }
+  .choice-card.primary { border-color: var(--blue-border); background: rgba(14,165,233,0.05); }
+  .choice-card-left { display: flex; align-items: center; gap: 0.75rem; }
+  .choice-icon { font-size: 1.5rem; }
+  .choice-title { font-size: 0.92rem; font-weight: 700; margin-bottom: 0.15rem; }
+  .choice-sub   { font-size: 0.75rem; color: var(--text-muted); }
+  .choice-arrow { color: var(--blue); font-size: 1rem; }
 
-  @media (max-width: 400px) {
-    .hu-facts { grid-template-columns: 1fr 1fr; }
-    .value-compare { grid-template-columns: 1fr; }
+  .note {
+    font-size: 0.72rem; color: var(--text-muted);
+    text-align: center; margin-top: 0.75rem;
+    line-height: 1.5;
   }
+  .note span { color: var(--green); font-weight: 600; }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">
-    <div class="nav-logo-mark">🔧</div>
-    <span class="nav-logo-text">HU-Vorab<span>·Check</span></span>
-  </a>
-  <a href="check.html" class="nav-cta">Jetzt starten →</a>
-</nav>
+<div class="slider" id="slider">
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-badge">✦ Kostenlos starten</div>
-  <h1>Bestehst du die<br><span class="accent">Hauptuntersuchung?</span></h1>
-  <p class="hero-sub">
-    Fotografiere dein Auto — KI sagt dir in 60 Sekunden was du vorher wissen musst.
-  </p>
-  <a href="hu-demo.html" class="btn-primary">Demo ansehen — kostenlos →</a>
-  <br>
-  <a href="check.html" class="btn-secondary">Direkt zum Check</a>
-  <div class="hero-note"><span>✓ Keine Anmeldung</span> · Vollcheck ab € 4,99</div>
-</section>
-
-<!-- WAS IST HU -->
-<section class="what-section">
-  <span class="section-label">Kurz erklärt</span>
-  <h2>Was ist die<br>Hauptuntersuchung?</h2>
-
-  <div class="hu-explain">
-    <div class="hu-explain-title">🔍 Die amtliche Fahrzeugprüfung</div>
-    <div class="hu-explain-text">
-      Die Hauptuntersuchung (HU) — früher TÜV genannt — ist eine gesetzlich vorgeschriebene Sicherheitsprüfung für alle Fahrzeuge. Ein zugelassener Prüfer kontrolliert ob dein Auto verkehrssicher ist: Bremsen, Beleuchtung, Lenkung, Abgase und vieles mehr.
-    </div>
-  </div>
-
-  <div class="hu-explain">
-    <div class="hu-explain-title">📅 Wann muss ich zum TÜV?</div>
-    <div class="hu-explain-text">
-      Neue Autos: nach 3 Jahren zum ersten Mal, danach alle 2 Jahre. Das Fälligkeitsdatum steht auf der Plakette an deinem Kennzeichen — Monat und Jahr sind dort eingeprägt.
-    </div>
-  </div>
-
-  <div class="hu-explain">
-    <div class="hu-explain-title">⚠️ Was passiert wenn ich nicht hingehe?</div>
-    <div class="hu-explain-text">
-      Nach Ablauf der Frist drohen Bußgelder ab 15 € — und bei mehr als 2 Monaten Überschreitung musst du mit einem Punkt in Flensburg rechnen. Außerdem kann dein Versicherungsschutz eingeschränkt sein.
-    </div>
-  </div>
-
-  <div class="hu-facts">
-    <div class="hu-fact">
-      <div class="hu-fact-num">20 Mio.</div>
-      <div class="hu-fact-label">HU-Prüfungen pro Jahr in Deutschland</div>
-    </div>
-    <div class="hu-fact">
-      <div class="hu-fact-num">1 von 5</div>
-      <div class="hu-fact-label">Fahrzeugen hat Mängel bei der HU</div>
-    </div>
-    <div class="hu-fact">
-      <div class="hu-fact-num">alle 2J.</div>
-      <div class="hu-fact-label">Pflichttermin für die meisten PKW</div>
-    </div>
-    <div class="hu-fact">
-      <div class="hu-fact-num">150 €</div>
-      <div class="hu-fact-label">Kosten für Nachprüfung bei Mängeln</div>
-    </div>
-  </div>
-</section>
-
-<!-- KOSTEN NUTZEN -->
-<section class="value-section">
-  <span class="section-label">Kosten & Nutzen</span>
-  <h2>Warum vorher<br>prüfen lohnt</h2>
-
-  <div class="value-compare">
-    <div class="value-card bad">
-      <div class="value-card-label">Ohne Check</div>
-      <div class="value-card-item"><span class="icon">❌</span>Mängel erst beim TÜV entdeckt</div>
-      <div class="value-card-item"><span class="icon">❌</span>Nachprüfung kostet extra</div>
-      <div class="value-card-item"><span class="icon">❌</span>Werkstatt unter Zeitdruck</div>
-      <div class="value-card-item"><span class="icon">❌</span>Keine Verhandlungsposition</div>
-    </div>
-    <div class="value-card good">
-      <div class="value-card-label">Mit HU-Check</div>
-      <div class="value-card-item"><span class="icon">✓</span>Mängel vorher kennen</div>
-      <div class="value-card-item"><span class="icon">✓</span>Werkstatt in Ruhe wählen</div>
-      <div class="value-card-item"><span class="icon">✓</span>Kosten einschätzen</div>
-      <div class="value-card-item"><span class="icon">✓</span>Termin entspannt bestehen</div>
-    </div>
-  </div>
-</section>
-
-<!-- SO EINFACH -->
-<section class="how-section">
-  <span class="section-label">So funktioniert's</span>
-  <h2>3 Schritte —<br>fertig in 10 Minuten</h2>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div>
-        <div class="step-title">Prüfbereiche wählen</div>
-        <div class="step-desc">Reifen, Bremsen, Beleuchtung, Karosserie — du wählst was du prüfen möchtest.</div>
+  <!-- ══════════════════════════════
+       SCREEN 1: Was ist HU?
+  ══════════════════════════════ -->
+  <div class="screen">
+    <div class="top-bar">
+      <div class="logo">
+        <div class="logo-mark">🔧</div>
+        <div class="logo-text">HU-Vorab<span>·Check</span></div>
+      </div>
+      <div class="dots">
+        <div class="dot active" id="d1"></div>
+        <div class="dot" id="d2"></div>
+        <div class="dot" id="d3"></div>
+        <div class="dot" id="d4"></div>
+        <div class="dot" id="d5"></div>
       </div>
     </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div>
-        <div class="step-title">Fotos aufnehmen</div>
-        <div class="step-desc">Einfach mit dem Smartphone fotografieren — kein Spezialwissen nötig.</div>
+
+    <div class="content">
+      <div class="badge">Was ist das?</div>
+      <h1>HU — was steckt<br>dahinter?</h1>
+      <p class="lead">Die Hauptuntersuchung ist die gesetzlich vorgeschriebene Sicherheitsprüfung für dein Auto — früher TÜV genannt.</p>
+
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">📅</div>
+          <div>
+            <div class="card-title">Wann muss ich hin?</div>
+            <div class="card-text">Neue Autos nach 3 Jahren zum ersten Mal, danach <strong>alle 2 Jahre</strong>. Das Datum steht auf der Plakette am Kennzeichen.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔍</div>
+          <div>
+            <div class="card-title">Was wird geprüft?</div>
+            <div class="card-text">Bremsen, Beleuchtung, Lenkung, Reifen, Karosserie, Abgase — <strong>über 150 Prüfpunkte</strong> in ca. 45 Minuten.</div>
+          </div>
+        </div>
+        <div class="card red-border">
+          <div class="card-icon">⚠️</div>
+          <div>
+            <div class="card-title">Was passiert wenn ich nicht hingehe?</div>
+            <div class="card-text">Ab 2 Monaten Überschreitung: <strong>Bußgeld + Punkt in Flensburg</strong>. Und dein Versicherungsschutz kann eingeschränkt sein.</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div>
-        <div class="step-title">KI-Ergebnis erhalten</div>
-        <div class="step-desc">Ampel-Einschätzung pro Bereich: Grün, Gelb oder Rot — plus PDF-Report.</div>
+
+    <div class="bottom-bar">
+      <button class="btn-next" onclick="goTo(1)">Weiter — Was fällt durch? →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SCREEN 2: Warum fällt man durch?
+  ══════════════════════════════ -->
+  <div class="screen">
+    <div class="top-bar">
+      <div class="logo">
+        <div class="logo-mark">🔧</div>
+        <div class="logo-text">HU-Vorab<span>·Check</span></div>
+      </div>
+      <div class="dots">
+        <div class="dot" id="d1b"></div>
+        <div class="dot active" id="d2b"></div>
+        <div class="dot" id="d3b"></div>
+        <div class="dot" id="d4b"></div>
+        <div class="dot" id="d5b"></div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- PREIS -->
-<section class="price-section">
-  <span class="section-label">Transparent</span>
-  <h2>Was kostet es?</h2>
-  <div class="price-card">
-    <div class="price-free-badge">✓ Basis kostenlos</div>
-    <div class="price-amount"><sup>€</sup>4<span style="font-size:1.2rem;">,99</span></div>
-    <div class="price-desc">Einmalig · kein Abo · kein Account</div>
-    <div class="price-list">
-      <div class="price-item"><span class="check">✓</span> KI-Analyse aller Fotos</div>
-      <div class="price-item"><span class="check">✓</span> Ampel-Ergebnis pro Bereich</div>
-      <div class="price-item"><span class="check">✓</span> Kostenschätzung für Mängel</div>
-      <div class="price-item"><span class="check">✓</span> PDF-Report zum Mitnehmen</div>
-      <div class="price-item"><span class="check">✓</span> Terminwunsch direkt senden</div>
+    <div class="content">
+      <div class="badge red">1 von 5 fällt durch</div>
+      <h1>Die häufigsten<br><span class="red">Durchfall-Gründe</span></h1>
+      <p class="lead">Viele Mängel sind Kleinigkeiten — die du selbst in 10 Minuten erkennen kannst.</p>
+
+      <div class="cards">
+        <div class="card red-border">
+          <div class="card-icon">💡</div>
+          <div>
+            <div class="card-title">Defekte Beleuchtung</div>
+            <div class="card-text">Glühbirne, Blinklicht, Bremsleuchte — <strong>sofort sichtbar, aber oft übersehen</strong>. Größter Einzelgrund für Beanstandungen.</div>
+          </div>
+        </div>
+        <div class="card red-border">
+          <div class="card-icon">🛞</div>
+          <div>
+            <div class="card-title">Reifen & Bremsen</div>
+            <div class="card-text">Zu wenig Profil, abgefahrene Bremsscheiben. <strong>Selbst prüfbar</strong> — Profiltiefenmesser kostet 3€.</div>
+          </div>
+        </div>
+        <div class="card amber-border">
+          <div class="card-icon">🚿</div>
+          <div>
+            <div class="card-title">Kleinigkeiten die zählen</div>
+            <div class="card-text">Wischerwasser leer · Hupe defekt · <strong>Verbandskasten abgelaufen</strong> · Warndreieck fehlt · Warnweste fehlt</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <a href="hu-demo.html" class="btn-primary" style="display:block;text-align:center;">Erst Demo ansehen →</a>
-  </div>
-</section>
 
-<!-- CTA FINAL -->
-<section class="cta-final">
-  <h2>Bereit für deinen<br>HU-Termin?</h2>
-  <p>Sieh dir zuerst 3 echte Beispiele an — dann weißt du genau was dich erwartet.</p>
-  <a href="hu-demo.html" class="btn-primary" style="display:inline-block;max-width:320px;">Demo ansehen — kostenlos →</a>
-  <br>
-  <a href="check.html" class="btn-secondary" style="display:inline-block;max-width:320px;margin-top:0.6rem;">Direkt starten</a>
-  <div style="margin-top:1rem;font-size:0.72rem;color:var(--text-muted);">
-    Ein Tool von <a href="https://mein-auto-assistent.de" style="color:var(--blue);text-decoration:none;">Mein-Auto-Assistent.de</a>
+    <div class="bottom-bar">
+      <button class="btn-next" onclick="goTo(2)">Weiter — Was kostet das? →</button>
+      <span class="skip-link" onclick="goTo(0)">← Zurück</span>
+    </div>
   </div>
-</section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-brand">© 2026 <span>HU-Vorab-Check</span> · Mein-Auto-Assistent.de</div>
-  <div class="footer-links">
-    <a href="#">Impressum</a>
-    <a href="#">Datenschutz</a>
+  <!-- ══════════════════════════════
+       SCREEN 3: Die Rechnung
+  ══════════════════════════════ -->
+  <div class="screen">
+    <div class="top-bar">
+      <div class="logo">
+        <div class="logo-mark">🔧</div>
+        <div class="logo-text">HU-Vorab<span>·Check</span></div>
+      </div>
+      <div class="dots">
+        <div class="dot" id="d1c"></div>
+        <div class="dot" id="d2c"></div>
+        <div class="dot active" id="d3c"></div>
+        <div class="dot" id="d4c"></div>
+        <div class="dot" id="d5c"></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="badge amber">Die Rechnung</div>
+      <h1>€ 4,99 oder<br><span class="amber">viel mehr?</span></h1>
+      <p class="lead">Was kostet dich ein durchgefallenes Auto wirklich?</p>
+
+      <div class="math-box">
+        <div class="math-row">
+          <span class="math-label">🔴 Nachprüfgebühr</span>
+          <span class="math-val red">~ 26 €</span>
+        </div>
+        <div class="math-row">
+          <span class="math-label">🔴 Neuer Termin (Wartezeit)</span>
+          <span class="math-val red">1–3 Wochen</span>
+        </div>
+        <div class="math-row">
+          <span class="math-label">🔴 Urlaubstag / Zeitverlust</span>
+          <span class="math-val red">~ 100–300 €</span>
+        </div>
+        <div class="math-row">
+          <span class="math-label">🔴 Stress & Ärger</span>
+          <span class="math-val red">unbezahlbar</span>
+        </div>
+        <div class="math-row total">
+          <span class="math-label">Summe Durchfall</span>
+          <span class="math-val red">130 €+</span>
+        </div>
+      </div>
+
+      <div class="vs-divider">vs.</div>
+
+      <div class="math-box" style="border-color:rgba(74,222,128,0.3);background:rgba(74,222,128,0.05);">
+        <div class="math-row total">
+          <span class="math-label">🟢 HU-Vorab-Check</span>
+          <span class="math-val green">4,99 €</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <button class="btn-next" onclick="goTo(3)">Weiter — Wie funktioniert's? →</button>
+      <span class="skip-link" onclick="goTo(1)">← Zurück</span>
+    </div>
   </div>
-</footer>
+
+  <!-- ══════════════════════════════
+       SCREEN 4: So einfach
+  ══════════════════════════════ -->
+  <div class="screen">
+    <div class="top-bar">
+      <div class="logo">
+        <div class="logo-mark">🔧</div>
+        <div class="logo-text">HU-Vorab<span>·Check</span></div>
+      </div>
+      <div class="dots">
+        <div class="dot" id="d1d"></div>
+        <div class="dot" id="d2d"></div>
+        <div class="dot" id="d3d"></div>
+        <div class="dot active" id="d4d"></div>
+        <div class="dot" id="d5d"></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="badge green">So einfach</div>
+      <h1>3 Schritte —<br><span class="green">fertig in 10 Min.</span></h1>
+      <p class="lead">Kein Fachwissen nötig. Nur dein Smartphone.</p>
+
+      <div class="cards">
+        <div class="card blue-border">
+          <div class="card-icon">1️⃣</div>
+          <div>
+            <div class="card-title">Prüfbereiche wählen</div>
+            <div class="card-text">Beleuchtung, Reifen, Bremsen, Karosserie — du wählst was du prüfen möchtest.</div>
+          </div>
+        </div>
+        <div class="card blue-border">
+          <div class="card-icon">2️⃣</div>
+          <div>
+            <div class="card-title">Fotos aufnehmen</div>
+            <div class="card-text">Einfach fotografieren — die KI erklärt dir vorher genau was sie sehen möchte.</div>
+          </div>
+        </div>
+        <div class="card green-border">
+          <div class="card-icon">3️⃣</div>
+          <div>
+            <div class="card-title">Ampel-Ergebnis erhalten</div>
+            <div class="card-text"><strong>🟢 Grün</strong> = alles ok · <strong>🟡 Gelb</strong> = prüfen lassen · <strong>🔴 Rot</strong> = vor HU reparieren</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <button class="btn-next" onclick="goTo(4)">Weiter — Jetzt starten →</button>
+      <span class="skip-link" onclick="goTo(2)">← Zurück</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SCREEN 5: CTA
+  ══════════════════════════════ -->
+  <div class="screen">
+    <div class="top-bar">
+      <div class="logo">
+        <div class="logo-mark">🔧</div>
+        <div class="logo-text">HU-Vorab<span>·Check</span></div>
+      </div>
+      <div class="dots">
+        <div class="dot" id="d1e"></div>
+        <div class="dot" id="d2e"></div>
+        <div class="dot" id="d3e"></div>
+        <div class="dot" id="d4e"></div>
+        <div class="dot active" id="d5e"></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="badge green">Los geht's</div>
+      <h1>Bereit für deinen<br><span class="green">HU-Termin?</span></h1>
+      <p class="lead">Sieh dir zuerst 3 echte Beispiele an — oder starte direkt deinen Check.</p>
+
+      <div class="choice-cards">
+        <a href="hu-demo.html" class="choice-card primary">
+          <div class="choice-card-left">
+            <div class="choice-icon">👁</div>
+            <div>
+              <div class="choice-title">Demo ansehen</div>
+              <div class="choice-sub">3 echte Beispiele — Grün, Gelb, Rot</div>
+            </div>
+          </div>
+          <div class="choice-arrow">→</div>
+        </a>
+        <a href="check.html" class="choice-card">
+          <div class="choice-card-left">
+            <div class="choice-icon">🔧</div>
+            <div>
+              <div class="choice-title">Direkt zum Check</div>
+              <div class="choice-sub">Basis kostenlos · Vollcheck € 4,99</div>
+            </div>
+          </div>
+          <div class="choice-arrow">→</div>
+        </a>
+      </div>
+
+      <div class="note">
+        <span>✓ Keine Anmeldung</span> · Kein Abo · Einmalig bezahlen<br>
+        Ein Tool von <a href="https://mein-auto-assistent.de" style="color:var(--blue);text-decoration:none;">Mein-Auto-Assistent.de</a>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span class="skip-link" onclick="goTo(3)">← Zurück</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var current = 0;
+var total = 5;
+
+function goTo(n) {
+  current = n;
+  document.getElementById('slider').style.transform = 'translateX(-' + (n * 20) + '%)';
+  updateDots();
+}
+
+function updateDots() {
+  var suffixes = ['', 'b', 'c', 'd', 'e'];
+  for (var s = 0; s < suffixes.length; s++) {
+    for (var i = 1; i <= 5; i++) {
+      var el = document.getElementById('d' + i + suffixes[s]);
+      if (el) {
+        el.className = 'dot' + (i - 1 === current ? ' active' : '');
+      }
+    }
+  }
+}
+
+// Touch/Swipe Support
+var startX = 0;
+document.addEventListener('touchstart', function(e) {
+  startX = e.touches[0].clientX;
+});
+document.addEventListener('touchend', function(e) {
+  var diff = startX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0 && current < total - 1) goTo(current + 1);
+    if (diff < 0 && current > 0) goTo(current - 1);
+  }
+});
+</script>
 
 </body>
 </html>
