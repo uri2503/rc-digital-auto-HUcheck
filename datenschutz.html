@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datenschutz · HU-Vorab-Check</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #12141A; --surface: #1A1D26;
+    --blue: #0EA5E9; --text: #F8FAFC; --text-muted: #8896A8;
+    --border: rgba(255,255,255,0.08);
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.7; padding: 2rem 1.5rem 4rem; max-width: 640px; margin: 0 auto; -webkit-font-smoothing: antialiased; }
+  .back { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; }
+  h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  .sub { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 2rem; }
+  h2 { font-size: 0.88rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--blue); margin: 1.75rem 0 0.5rem; }
+  p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+  p strong { color: var(--text); }
+  ul { font-size: 0.85rem; color: var(--text-muted); padding-left: 1.25rem; margin-bottom: 0.5rem; }
+  li { margin-bottom: 0.25rem; }
+  a { color: var(--blue); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back">← Zurück</a>
+
+<h1>Datenschutzerklärung</h1>
+<p class="sub">Zuletzt aktualisiert: Juni 2026</p>
+
+<h2>1. Verantwortlicher</h2>
+<p><strong>Uri Riedel</strong>, Riedel Classics, Esslinger Str. 5, 73249 Wernau<br>
+E-Mail: <a href="mailto:u.riedel@riedel-classics.de">u.riedel@riedel-classics.de</a></p>
+
+<h2>2. Welche Daten wir verarbeiten</h2>
+<p>Beim Nutzen des HU-Vorab-Checks verarbeiten wir folgende Daten:</p>
+<ul>
+  <li><strong>Fotos deines Fahrzeugs</strong> — zur KI-Analyse, werden nicht dauerhaft gespeichert</li>
+  <li><strong>E-Mail-Adresse</strong> — für die Zahlungsabwicklung via Stripe</li>
+  <li><strong>Kennzeichen (optional)</strong> — wenn du es angibst, zur Verbesserung der Analyse</li>
+  <li><strong>Technische Daten</strong> — IP-Adresse, Browser, Zugriffszeit (Server-Logs)</li>
+</ul>
+
+<h2>3. KI-Verarbeitung (Anthropic Claude)</h2>
+<p>Die Foto-Analyse erfolgt durch <strong>Claude (Anthropic)</strong>. Deine Fotos werden zur Analyse an die Anthropic API übermittelt und dort verarbeitet. Anthropic speichert die Daten gemäß ihrer Datenschutzrichtlinie (<a href="https://www.anthropic.com/privacy" target="_blank">anthropic.com/privacy</a>). Die Fotos werden von uns nicht dauerhaft gespeichert.</p>
+
+<h2>4. Zahlungsabwicklung (Stripe)</h2>
+<p>Zahlungen werden über <strong>Stripe Inc.</strong> abgewickelt. Dabei werden deine Zahlungsdaten direkt an Stripe übertragen und dort verarbeitet. Wir speichern keine Kreditkartendaten. Weitere Informationen: <a href="https://stripe.com/de/privacy" target="_blank">stripe.com/de/privacy</a></p>
+
+<h2>5. Hosting (Supabase & GitHub Pages)</h2>
+<p>Diese Seite wird über <strong>GitHub Pages</strong> bereitgestellt. Backend-Funktionen laufen über <strong>Supabase</strong> (Server in der EU). Beide Anbieter verarbeiten technische Zugriffsdaten gemäß ihrer Datenschutzrichtlinien.</p>
+
+<h2>6. Deine Rechte</h2>
+<p>Du hast das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung deiner Daten sowie das Recht auf Datenübertragbarkeit. Wende dich dazu an: <a href="mailto:u.riedel@riedel-classics.de">u.riedel@riedel-classics.de</a></p>
+
+<h2>7. Beschwerderecht</h2>
+<p>Du hast das Recht, dich bei einer Datenschutzaufsichtsbehörde zu beschweren. Zuständig ist der Landesbeauftragte für den Datenschutz Baden-Württemberg.</p>
+
+<h2>8. Cookies</h2>
+<p>Diese Seite verwendet keine Tracking-Cookies. Der Zahlungsstatus wird temporär im <strong>sessionStorage</strong> deines Browsers gespeichert und automatisch gelöscht wenn du den Tab schließt.</p>
+
+</body>
+</html>
