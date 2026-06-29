@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HU-Vorab-Check · Demo — 3 echte Beispiele</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:          #12141A;
+    --surface:     #1A1D26;
+    --surface2:    #20242F;
+    --blue:        #0EA5E9;
+    --blue-dim:    #0369A1;
+    --blue-glow:   rgba(14,165,233,0.10);
+    --blue-border: rgba(14,165,233,0.22);
+    --green:       #4ade80;
+    --amber:       #fbbf24;
+    --red:         #f87171;
+    --text:        #F8FAFC;
+    --text-muted:  #8896A8;
+    --border:      rgba(255,255,255,0.07);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+    background: rgba(18,20,26,0.97);
+    backdrop-filter: blur(12px); z-index: 100;
+  }
+
+  .nav-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+  .nav-logo-mark { width: 28px; height: 28px; background: var(--blue); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+  .nav-logo-text { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+  .nav-logo-text span { color: var(--blue); font-weight: 400; }
+
+  .nav-back { font-size: 0.78rem; color: var(--text-muted); text-decoration: none; }
+
+  /* DEMO HEADER */
+  .demo-header {
+    padding: 2rem 1.5rem 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .demo-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--amber);
+    background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.25);
+    padding: 0.22rem 0.65rem; border-radius: 100px; margin-bottom: 1rem;
+  }
+
+  .demo-header h1 {
+    font-size: 1.5rem; font-weight: 800;
+    letter-spacing: -0.03em; margin-bottom: 0.5rem;
+  }
+
+  .demo-header p {
+    font-size: 0.85rem; color: var(--text-muted);
+    max-width: 320px; margin: 0 auto;
+  }
+
+  /* CASE CARDS */
+  .cases { display: flex; flex-direction: column; gap: 0; }
+
+  .case {
+    border-bottom: 1px solid var(--border);
+    padding: 1.75rem 1.5rem;
+  }
+
+  .case-header {
+    display: flex; align-items: center;
+    justify-content: space-between; margin-bottom: 1.25rem;
+  }
+
+  .case-num {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+
+  .ampel {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+  }
+
+  .ampel.gruen { background: rgba(74,222,128,0.12); color: var(--green); border: 1px solid rgba(74,222,128,0.25); }
+  .ampel.gelb  { background: rgba(251,191,36,0.12); color: var(--amber); border: 1px solid rgba(251,191,36,0.25); }
+  .ampel.rot   { background: rgba(248,113,113,0.12); color: var(--red);  border: 1px solid rgba(248,113,113,0.25); }
+
+  .case h2 {
+    font-size: 1.1rem; font-weight: 700;
+    letter-spacing: -0.02em; margin-bottom: 0.3rem;
+  }
+
+  .case-sub {
+    font-size: 0.78rem; color: var(--text-muted);
+    margin-bottom: 1.25rem;
+  }
+
+  /* Fake Foto-Grid */
+  .foto-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0.5rem; margin-bottom: 1.25rem;
+  }
+
+  .foto-tile {
+    aspect-ratio: 4/3;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    position: relative;
+  }
+
+  .foto-tile.wide { grid-column: 1 / -1; aspect-ratio: 16/7; }
+
+  .foto-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    padding: 1rem 0.6rem 0.4rem;
+    font-size: 0.65rem; color: rgba(255,255,255,0.7);
+    font-style: italic;
+  }
+
+  /* KI Ergebnis-Karten */
+  .results { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.25rem; }
+
+  .result-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.9rem 1rem;
+    display: flex; align-items: flex-start; gap: 0.75rem;
+  }
+
+  .result-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    flex-shrink: 0; margin-top: 0.3rem;
+  }
+  .result-dot.gruen { background: var(--green); }
+  .result-dot.gelb  { background: var(--amber); }
+  .result-dot.rot   { background: var(--red); }
+
+  .result-area {
+    font-size: 0.75rem; font-weight: 700;
+    color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: 0.06em; margin-bottom: 0.2rem;
+  }
+
+  .result-text { font-size: 0.82rem; color: var(--text); line-height: 1.55; }
+
+  .result-cost {
+    font-size: 0.72rem; color: var(--amber);
+    margin-top: 0.3rem; font-weight: 600;
+  }
+
+  /* Fazit Box */
+  .fazit {
+    border-radius: 10px; padding: 1rem 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .fazit.gruen { background: rgba(74,222,128,0.07); border: 1px solid rgba(74,222,128,0.2); }
+  .fazit.gelb  { background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.2); }
+  .fazit.rot   { background: rgba(248,113,113,0.07); border: 1px solid rgba(248,113,113,0.2); }
+
+  .fazit-label {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 0.3rem;
+  }
+  .fazit.gruen .fazit-label { color: var(--green); }
+  .fazit.gelb  .fazit-label { color: var(--amber); }
+  .fazit.rot   .fazit-label { color: var(--red); }
+
+  .fazit-text { font-size: 0.82rem; color: var(--text); line-height: 1.55; }
+
+  /* CTA am Ende */
+  .cta-section {
+    padding: 2rem 1.5rem;
+    text-align: center;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .cta-section h2 {
+    font-size: 1.25rem; font-weight: 700;
+    letter-spacing: -0.02em; margin-bottom: 0.5rem;
+  }
+
+  .cta-section p {
+    font-size: 0.82rem; color: var(--text-muted);
+    margin-bottom: 1.5rem; line-height: 1.6;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--blue); color: #fff;
+    font-size: 0.95rem; font-weight: 700;
+    padding: 0.9rem 2rem; border-radius: 10px;
+    text-decoration: none; width: 100%; max-width: 320px;
+  }
+
+  .btn-secondary {
+    display: inline-block;
+    background: transparent; color: var(--text-muted);
+    font-size: 0.82rem; font-weight: 500;
+    padding: 0.6rem 1rem; border-radius: 8px;
+    text-decoration: none; border: 1px solid var(--border);
+    margin-top: 0.6rem; width: 100%; max-width: 320px;
+  }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 1.25rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
+  }
+  .footer-brand { font-size: 0.72rem; color: var(--text-muted); }
+  .footer-brand span { color: var(--blue); }
+  .footer-links { display: flex; gap: 1.25rem; }
+  .footer-links a { font-size: 0.68rem; color: var(--text-muted); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="landing.html" class="nav-logo">
+    <div class="nav-logo-mark">🔧</div>
+    <span class="nav-logo-text">HU-Vorab<span>·Check</span></span>
+  </a>
+  <a href="landing.html" class="nav-back">← Zurück</a>
+</nav>
+
+<!-- HEADER -->
+<div class="demo-header">
+  <div class="demo-badge">👁 Demo · 3 echte Beispiele</div>
+  <h1>So sieht dein<br>Ergebnis aus</h1>
+  <p>Echte KI-Analysen — damit du weißt was dich erwartet.</p>
+</div>
+
+<div class="cases">
+
+  <!-- CASE 1: GRÜN -->
+  <div class="case">
+    <div class="case-header">
+      <span class="case-num">Beispiel 1 von 3</span>
+      <span class="ampel gruen">🟢 HU-bereit</span>
+    </div>
+    <h2>VW Golf, Bj. 2019</h2>
+    <div class="case-sub">4 Prüfbereiche · 6 Fotos · Analyse in 18 Sek.</div>
+
+    <div class="foto-grid">
+      <div class="foto-tile wide">🚗<div class="foto-label">Eingangsfotos — Gesamtzustand</div></div>
+      <div class="foto-tile">🔦<div class="foto-label">Beleuchtung eingeschaltet</div></div>
+      <div class="foto-tile">🛞<div class="foto-label">Reifenprofil Vorderachse</div></div>
+    </div>
+
+    <div class="results">
+      <div class="result-item">
+        <div class="result-dot gruen"></div>
+        <div>
+          <div class="result-area">Beleuchtung</div>
+          <div class="result-text">Alle Leuchten funktionieren einwandfrei. Abblendlicht, Blinker und Rücklicht sind symmetrisch und hell. Streuscheiben ohne Risse oder Trübung.</div>
+        </div>
+      </div>
+      <div class="result-item">
+        <div class="result-dot gruen"></div>
+        <div>
+          <div class="result-area">Reifen</div>
+          <div class="result-text">Profiltiefe visuell deutlich über dem Mindestmaß. Keine Risse oder Beschädigungen an den Flanken erkennbar. Gleichmäßige Abnutzung.</div>
+        </div>
+      </div>
+      <div class="result-item">
+        <div class="result-dot gruen"></div>
+        <div>
+          <div class="result-area">Karosserie</div>
+          <div class="result-text">Lackzustand gepflegt, keine Durchrostungen erkennbar. Stoßfänger sitzen korrekt. Keine scharfkantigen Beschädigungen.</div>
+        </div>
+      </div>
+      <div class="result-item">
+        <div class="result-dot gruen"></div>
+        <div>
+          <div class="result-area">Scheiben & Wischer</div>
+          <div class="result-text">Windschutzscheibe ohne Risse im Sichtfeld. Wischerblätter ohne sichtbare Risse oder Ablösung des Gummis.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fazit gruen">
+      <div class="fazit-label">KI-Fazit</div>
+      <div class="fazit-text">Alle geprüften Bereiche unauffällig. Du kannst entspannt zum HU-Termin fahren — keine Vorarbeiten notwendig.</div>
+    </div>
+  </div>
+
+  <!-- CASE 2: GELB -->
+  <div class="case">
+    <div class="case-header">
+      <span class="case-num">Beispiel 2 von 3</span>
+      <span class="ampel gelb">🟡 Punkte klären</span>
+    </div>
+    <h2>Mercedes C-Klasse, Bj. 2014</h2>
+    <div class="case-sub">5 Prüfbereiche · 8 Fotos · Analyse in 24 Sek.</div>
+
+    <div class="foto-grid">
+      <div class="foto-tile wide">🚘<div class="foto-label">Eingangsfotos — leichte Gebrauchsspuren</div></div>
+      <div class="foto-tile">🛞<div class="foto-label">Reifen hinten links</div></div>
+      <div class="foto-tile">🔧<div class="foto-label">Bremsscheibe durch Felge</div></div>
+    </div>
+
+    <div class="results">
+      <div class="result-item">
+        <div class="result-dot gruen"></div>
+        <div>
+          <div class="result-area">Beleuchtung</div>
+          <div class="result-text">Alle Leuchtmittel funktionieren. Leichte Trübung der Scheinwerfer-Streuscheiben — hat keinen Einfluss auf die HU, beeinträchtigt aber die Lichtausbeute.</div>
+        </div>
+      </div>
+      <div class="result-item">
+        <div class="result-dot gelb"></div>
+        <div>
+          <div class="result-area">Reifen</div>
+          <div class="result-text">Hinten links: Profiltiefe wirkt grenzwertig — Verschleißanzeiger scheint fast erreicht. Empfehlung: vor dem HU-Termin mit einem Profiltiefenmesser nachmessen (unter 1,6 mm = Mängel).</div>
+          <div class="result-cost">Empfehlung: Reifen messen, ggf. erneuern — ca. 80–150 € pro Reifen</div>
+        </div>
+      </div>
+      <div class="result-item">
+        <div class="result-dot gelb"></div>
+        <div>
+          <div class="result-area">Bremsanlage</div>
+          <div class="result-text">Bremsscheibe vorne links zeigt deutliche Riefen und leichten Rost auf der Lauffläche. Bei normaler Nutzung oft unbedenklich — sollte aber von einer Werkstatt beurteilt werden.</div>
+          <div class="result-cost">Mögliche Kosten: Bremsscheiben vorne ca. 180–280 €</div>
+        </div>
+      </div>
+      <div class="result-item">
+        <div class="result-dot gruen"></div>
+        <div>
+          <div class="result-area">Karosserie</div>
+          <div class="result-text">Normale Gebrauchsspuren, keine Durchrostung oder scharfkantigen Schäden erkennbar.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fazit gelb">
+      <div class="fazit-label">KI-Fazit</div>
+      <div class="fazit-text">2 Punkte solltest du vor dem Termin klären: Reifenprofil nachmessen und Bremsen von einer Werkstatt prüfen lassen. So vermeidest du eine Nachprüfung und sparst Nerven und Geld.</div>
+    </div>
+  </div>
+
+  <!-- CASE 3: ROT -->
+  <div class="case">
+    <div class="case-header">
+      <span class="case-num">Beispiel 3 von 3</span>
+      <span class="ampel rot">🔴 Handeln nötig</span>
+    </div>
+    <h2>BMW 3er, Bj. 2009</h2>
+    <div class="case-sub">6 Prüfbereiche · 10 Fotos · Analyse in 31 Sek.</div>
+
+    <div class="foto-grid">
+      <div class="foto-tile wide">🚙<div class="foto-label">Eingangsfotos — älteres Fahrzeug</div></div>
+      <div class="foto-tile">⚠️<div class="foto-label">Schweller mit Rostschäden</div></div>
+      <div class="foto-tile">🔴<div class="foto-label">Bremsleitung angerostet</div></div>
+    </div>
+
+    <div class="results">
+      <div class="result-item">
+        <div class="result-dot rot"></div>
+        <div>
+          <div class="result-area">Karosserie & Korrosion</div>
+          <div class="result-text">Schweller hinten rechts zeigt deutliche Durchrostung. Betroffene Bereiche wirken strukturell geschwächt — dies ist ein typischer HU-Mangel der zur Beanstandung führt.</div>
+          <div class="result-cost">Geschätzter Aufwand: Schweißarbeiten ca. 400–900 €</div>
+        </div>
+      </div>
+      <div class="result-item">
+        <div class="result-dot rot"></div>
+        <div>
+          <div class="result-area">Eigener Prüfpunkt: Unterboden</div>
+          <div class="result-text">Die Bremsleitung zeigt starke Korrosion — mögliche Gefahr für die Bremsfunktion. Dies ist ein sicherheitsrelevanter Mangel der zwingend vor dem HU-Termin behoben werden muss.</div>
+          <div class="result-cost">Geschätzter Aufwand: Bremsleitungen erneuern ca. 250–500 €</div>
+        </div>
+      </div>
+      <div class="result-item">
+        <div class="result-dot gelb"></div>
+        <div>
+          <div class="result-area">Reifen</div>
+          <div class="result-text">Reifenalter laut DOT-Nummer über 7 Jahre. Gesetzlich zulässig, aber Prüfer können dies als Hinweis auf Materialalterung werten.</div>
+          <div class="result-cost">Empfehlung: Neue Reifen ca. 300–500 € (Satz)</div>
+        </div>
+      </div>
+      <div class="result-item">
+        <div class="result-dot gruen"></div>
+        <div>
+          <div class="result-area">Beleuchtung</div>
+          <div class="result-text">Alle Leuchten funktionieren. Leichte Verfärbung der Rückleuchten — kein HU-Mangel.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fazit rot">
+      <div class="fazit-label">KI-Fazit</div>
+      <div class="fazit-text">2 erhebliche Mängel erkannt. Ohne Reparatur wird das Fahrzeug die HU nicht bestehen. Wir empfehlen: zuerst Karosseriebetrieb und Werkstatt kontaktieren, Kosten einholen, dann Termin buchen.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Jetzt deinen<br>Check starten</h2>
+  <p>Du hast gesehen wie es funktioniert. In 10 Minuten weißt du wo du stehst — bevor der TÜV es dir sagt.</p>
+  <a href="index.html" class="btn-primary">Meinen Check starten →</a>
+  <br>
+  <a href="landing.html" class="btn-secondary">← Zurück zur Übersicht</a>
+  <div style="margin-top:1rem;font-size:0.7rem;color:var(--text-muted);">
+    Basis kostenlos · Vollcheck € 4,99 · Kein Account nötig
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">© 2026 <span>HU-Vorab-Check</span> · Mein-Auto-Assistent.de</div>
+  <div class="footer-links">
+    <a href="#">Impressum</a>
+    <a href="#">Datenschutz</a>
+  </div>
+</footer>
+
+</body>
+</html>
