@@ -2063,14 +2063,13 @@ document.getElementById('keySaveBtn').addEventListener('click', saveKeyFromModal
 (function checkPaywall() {
   var params = new URLSearchParams(window.location.search);
   var paidParam = params.get('paid');
-  var paidStored = sessionStorage.getItem('hu_paid');
+  var paidStored = localStorage.getItem('hu_paid');
 
-  if (paidParam) { sessionStorage.setItem('hu_paid', paidParam); }
+  if (paidParam) { localStorage.setItem('hu_paid', paidParam); }
 
   if (paidParam || paidStored) {
     document.getElementById('paywallWrap').style.display = 'none';
     document.getElementById('appWrap').style.display = 'block';
-    if (!getApiKey()) openKeyModal();
     render();
     return;
   }
@@ -2102,6 +2101,7 @@ function startCheckout() {
   .then(function(r) { return r.json(); })
   .then(function(data) {
     if (data.url) {
+      localStorage.setItem('hu_pending', '1');
       window.location.href = data.url;
     } else {
       err.textContent = 'Fehler: ' + (data.error || 'Unbekannt');
@@ -2142,6 +2142,7 @@ function startCheckout() {
 
     <div style="margin-top:1rem;font-size:0.7rem;color:#8896A8;line-height:1.6;">
       🔒 Sichere Zahlung via Stripe · Du wirst weitergeleitet<br>
+      Mit der Zahlung stimmst du unserer <a href="datenschutz.html" style="color:#0EA5E9;text-decoration:none;">Datenschutzerklärung</a> zu.<br>
       <a href="hu-demo.html" style="color:#0EA5E9;text-decoration:none;">← Demo nochmal ansehen</a>
     </div>
   </div>
