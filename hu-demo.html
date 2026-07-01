@@ -32,13 +32,13 @@
 
   .slider {
     display: flex;
-    width: 400%; /* 4 screens */
+    width: 300%; /* 3 screens */
     height: 100%;
     transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
   }
 
   .screen {
-    width: 25%;
+    width: 33.3333%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -182,7 +182,7 @@
 
 <div class="slider" id="slider">
 
-  <!-- ══════ SCREEN 1: VW Golf — GRÜN ══════ -->
+  <!-- ══════ SCREEN 1: BMW — ROT (Durchfall-Beispiel) ══════ -->
   <div class="screen">
     <div class="top-bar">
       <div class="logo">
@@ -193,13 +193,72 @@
         <div class="dot active"></div>
         <div class="dot"></div>
         <div class="dot"></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="case-intro">
+        <span class="case-num">Beispiel 1 von 2</span>
+        <span class="ampel rot">🔴 Handeln nötig</span>
+      </div>
+      <div class="case-title">BMW 3er, Bj. 2009</div>
+      <div class="case-sub">3 Bereiche · 5 Fotos · Ergebnis in 22 Sek.</div>
+
+      <div class="results">
+        <div class="result-item">
+          <div class="result-dot rot"></div>
+          <div>
+            <div class="result-area">Karosserie & Korrosion</div>
+            <div class="result-text">Schweller hinten rechts zeigt Durchrostung — strukturell geschwächt. Typischer HU-Mangel der zur Beanstandung führt.</div>
+            <div class="result-cost">Schweißarbeiten: ca. 400–900 €</div>
+          </div>
+        </div>
+        <div class="result-item">
+          <div class="result-dot rot"></div>
+          <div>
+            <div class="result-area">Unterboden</div>
+            <div class="result-text">Bremsleitung stark verrostet — sicherheitsrelevanter Mangel. Muss vor dem HU-Termin behoben werden.</div>
+            <div class="result-cost">Bremsleitungen erneuern: ca. 250–500 €</div>
+          </div>
+        </div>
+        <div class="result-item">
+          <div class="result-dot gelb"></div>
+          <div>
+            <div class="result-area">Reifen</div>
+            <div class="result-text">Reifenalter laut DOT über 7 Jahre. Gesetzlich zulässig, aber Prüfer können Materialalterung beanstanden.</div>
+            <div class="result-cost">Neuer Reifensatz: ca. 300–500 €</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fazit rot">
+        <div class="fazit-label">KI-Fazit</div>
+        <div class="fazit-text">2 erhebliche Mängel — ohne Reparatur fällt das Fahrzeug durch. Erst Werkstatt, dann HU-Termin buchen.</div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <button class="btn-next" onclick="goTo(1)">Und wenn alles passt? →</button>
+    </div>
+  </div>
+
+  <!-- ══════ SCREEN 2: VW Golf — GRÜN (Positiv-Beispiel) ══════ -->
+  <div class="screen">
+    <div class="top-bar">
+      <div class="logo">
+        <div class="logo-mark">🔧</div>
+        <div class="logo-text">HU-Vorab<span>·Check</span></div>
+      </div>
+      <div class="dots">
+        <div class="dot"></div>
+        <div class="dot active"></div>
         <div class="dot"></div>
       </div>
     </div>
 
     <div class="content">
       <div class="case-intro">
-        <span class="case-num">Beispiel 1 von 3</span>
+        <span class="case-num">Beispiel 2 von 2</span>
         <span class="ampel gruen">🟢 HU-bereit</span>
       </div>
       <div class="case-title">VW Golf, Bj. 2019</div>
@@ -238,84 +297,17 @@
 
       <div class="fazit gruen">
         <div class="fazit-label">KI-Fazit</div>
-        <div class="fazit-text">Alle Bereiche unauffällig. Du kannst entspannt zum HU-Termin fahren — keine Vorarbeiten nötig.</div>
+        <div class="fazit-text">Alle Bereiche unauffällig — <strong>hohe Wahrscheinlichkeit, dass du die HU ohne Probleme bestehst.</strong> Keine Vorarbeiten nötig.</div>
       </div>
     </div>
 
     <div class="bottom-bar">
-      <button class="btn-next" onclick="goTo(1)">Nächstes Beispiel →</button>
-    </div>
-  </div>
-
-  <!-- ══════ SCREEN 2: Mercedes — GELB ══════ -->
-  <div class="screen">
-    <div class="top-bar">
-      <div class="logo">
-        <div class="logo-mark">🔧</div>
-        <div class="logo-text">HU-Vorab<span>·Check</span></div>
-      </div>
-      <div class="dots">
-        <div class="dot"></div>
-        <div class="dot active"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-      </div>
-    </div>
-
-    <div class="content">
-      <div class="case-intro">
-        <span class="case-num">Beispiel 2 von 3</span>
-        <span class="ampel gelb">🟡 Punkte klären</span>
-      </div>
-      <div class="case-title">Mercedes C-Klasse, Bj. 2014</div>
-      <div class="case-sub">5 Bereiche · 8 Fotos · Ergebnis in 24 Sek.</div>
-
-      <div class="results">
-        <div class="result-item">
-          <div class="result-dot gruen"></div>
-          <div>
-            <div class="result-area">Beleuchtung</div>
-            <div class="result-text">Alle Leuchten funktionieren. Leichte Trübung der Scheinwerfer — kein HU-Mangel, aber Lichtausbeute reduziert.</div>
-          </div>
-        </div>
-        <div class="result-item">
-          <div class="result-dot gelb"></div>
-          <div>
-            <div class="result-area">Reifen</div>
-            <div class="result-text">Hinten links: Profil wirkt grenzwertig. Bitte mit Profiltiefenmesser nachmessen — unter 1,6 mm = Mangel bei der HU.</div>
-            <div class="result-cost">Ggf. 1 neuer Reifen: ca. 80–150 €</div>
-          </div>
-        </div>
-        <div class="result-item">
-          <div class="result-dot gelb"></div>
-          <div>
-            <div class="result-area">Bremsanlage</div>
-            <div class="result-text">Bremsscheibe vorne links zeigt Riefen. Bei normaler Nutzung oft ok — sollte trotzdem von einer Werkstatt beurteilt werden.</div>
-            <div class="result-cost">Bremsscheiben vorne: ca. 180–280 €</div>
-          </div>
-        </div>
-        <div class="result-item">
-          <div class="result-dot gruen"></div>
-          <div>
-            <div class="result-area">Karosserie</div>
-            <div class="result-text">Normale Gebrauchsspuren. Keine Durchrostung oder scharfkantigen Schäden erkennbar.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="fazit gelb">
-        <div class="fazit-label">KI-Fazit</div>
-        <div class="fazit-text">2 Punkte vorab klären — Reifen messen, Bremsen prüfen lassen. So vermeidest du eine Nachprüfung.</div>
-      </div>
-    </div>
-
-    <div class="bottom-bar">
-      <button class="btn-next" onclick="goTo(2)">Nächstes Beispiel →</button>
+      <button class="btn-next" onclick="goTo(2)">Jetzt meinen Check starten →</button>
       <span class="skip-link" onclick="goTo(0)">← Zurück</span>
     </div>
   </div>
 
-  <!-- ══════ SCREEN 3: BMW — ROT ══════ -->
+  <!-- ══════ SCREEN 3: CTA ══════ -->
   <div class="screen">
     <div class="top-bar">
       <div class="logo">
@@ -323,76 +315,6 @@
         <div class="logo-text">HU-Vorab<span>·Check</span></div>
       </div>
       <div class="dots">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot active"></div>
-        <div class="dot"></div>
-      </div>
-    </div>
-
-    <div class="content">
-      <div class="case-intro">
-        <span class="case-num">Beispiel 3 von 3</span>
-        <span class="ampel rot">🔴 Handeln nötig</span>
-      </div>
-      <div class="case-title">BMW 3er, Bj. 2009</div>
-      <div class="case-sub">6 Bereiche · 10 Fotos · Ergebnis in 31 Sek.</div>
-
-      <div class="results">
-        <div class="result-item">
-          <div class="result-dot rot"></div>
-          <div>
-            <div class="result-area">Karosserie & Korrosion</div>
-            <div class="result-text">Schweller hinten rechts zeigt Durchrostung — strukturell geschwächt. Typischer HU-Mangel der zur Beanstandung führt.</div>
-            <div class="result-cost">Schweißarbeiten: ca. 400–900 €</div>
-          </div>
-        </div>
-        <div class="result-item">
-          <div class="result-dot rot"></div>
-          <div>
-            <div class="result-area">Unterboden</div>
-            <div class="result-text">Bremsleitung stark verrostet — sicherheitsrelevanter Mangel. Muss vor dem HU-Termin behoben werden.</div>
-            <div class="result-cost">Bremsleitungen erneuern: ca. 250–500 €</div>
-          </div>
-        </div>
-        <div class="result-item">
-          <div class="result-dot gelb"></div>
-          <div>
-            <div class="result-area">Reifen</div>
-            <div class="result-text">Reifenalter laut DOT über 7 Jahre. Gesetzlich zulässig, aber Prüfer können Materialalterung beanstanden.</div>
-            <div class="result-cost">Neuer Reifensatz: ca. 300–500 €</div>
-          </div>
-        </div>
-        <div class="result-item">
-          <div class="result-dot gruen"></div>
-          <div>
-            <div class="result-area">Beleuchtung</div>
-            <div class="result-text">Alle Leuchten funktionieren. Leichte Verfärbung der Rückleuchten — kein HU-Mangel.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="fazit rot">
-        <div class="fazit-label">KI-Fazit</div>
-        <div class="fazit-text">2 erhebliche Mängel — ohne Reparatur fällt das Fahrzeug durch. Erst Werkstatt, dann HU-Termin buchen.</div>
-      </div>
-    </div>
-
-    <div class="bottom-bar">
-      <button class="btn-next" onclick="goTo(3)">Jetzt meinen Check starten →</button>
-      <span class="skip-link" onclick="goTo(1)">← Zurück</span>
-    </div>
-  </div>
-
-  <!-- ══════ SCREEN 4: CTA ══════ -->
-  <div class="screen">
-    <div class="top-bar">
-      <div class="logo">
-        <div class="logo-mark">🔧</div>
-        <div class="logo-text">HU-Vorab<span>·Check</span></div>
-      </div>
-      <div class="dots">
-        <div class="dot"></div>
         <div class="dot"></div>
         <div class="dot"></div>
         <div class="dot active"></div>
@@ -436,7 +358,7 @@
 
     <div class="bottom-bar">
       <button class="btn-next green-btn" onclick="window.location.href='check.html'">Für € 4,99 zum Check →</button>
-      <span class="skip-link" onclick="goTo(2)">← Zurück</span>
+      <span class="skip-link" onclick="goTo(1)">← Zurück</span>
     </div>
   </div>
 
@@ -447,12 +369,11 @@ var current = 0;
 
 function goTo(n) {
   current = n;
-  document.getElementById('slider').style.transform = 'translateX(-' + (n * 25) + '%)';
+  document.getElementById('slider').style.transform = 'translateX(-' + (n * (100/3)) + '%)';
   // Dots updaten
   var allDots = document.querySelectorAll('.dot');
   for (var i = 0; i < allDots.length; i++) {
-    var screenIdx = Math.floor(i / 4);
-    var dotIdx = i % 4;
+    var dotIdx = i % 3;
     allDots[i].className = 'dot' + (dotIdx === current ? ' active' : '');
   }
 }
@@ -463,7 +384,7 @@ document.addEventListener('touchstart', function(e) { startX = e.touches[0].clie
 document.addEventListener('touchend', function(e) {
   var diff = startX - e.changedTouches[0].clientX;
   if (Math.abs(diff) > 50) {
-    if (diff > 0 && current < 3) goTo(current + 1);
+    if (diff > 0 && current < 2) goTo(current + 1);
     if (diff < 0 && current > 0) goTo(current - 1);
   }
 });
